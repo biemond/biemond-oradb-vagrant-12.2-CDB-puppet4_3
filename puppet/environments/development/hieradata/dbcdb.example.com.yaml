@@ -1,0 +1,29 @@
+---
+
+db_version:               '12.2.0.1'
+dbinstance_version:       '12.2'
+db_file:                  'V839960-01'
+
+
+oraInventory_dir:         '/oracle'
+
+# global oracle vars
+oracle_base_dir:          '/oracle'
+oracle_home_dir:          '/oracle/product/12.2/db'
+
+# global OS vars
+oracle_os_user:           "oracle"
+oracle_os_group:          "dba"
+oracle_download_dir:      "/var/tmp/install"
+oracle_source:            "/software"
+
+oracle_database_name:          'cdb'
+oracle_database_domain_name:   'example.com'
+oracle_database_service_name:  'cdb.example.com'
+oracle_database_host:          'dbcdb.example.com:1521'
+
+oracle_database_file_dest:     '/oracle/oradata'
+oracle_database_recovery_dest: '/oracle/flash_recovery_area'
+
+oracle_database_sys_password:    'Welcome01'
+oracle_database_system_password: 'Welcome01'
