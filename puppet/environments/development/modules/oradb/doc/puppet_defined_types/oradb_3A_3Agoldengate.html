@@ -127,7 +127,7 @@ oradb::goldengate{ &#39;ggate11.2.1&#39;:
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;12.1.2&#39;</tt>)</em>
+        <em class="default">(defaults to: <tt>&#39;12.2.1&#39;</tt>)</em>
       
       
         &mdash;
@@ -629,7 +629,7 @@ oradb::goldengate{ &#39;ggate11.2.1&#39;:
         <pre class="code"><span class="info file"># File 'manifests/goldengate.pp', line 53</span>
 
 define oradb::goldengate(
-  String $version                            = &#39;12.1.2&#39;,
+  String $version                            = &#39;12.2.1&#39;,
   String $file                               = undef,
   Optional[String] $tar_file                 = undef,     # only for &lt; 12.1.2
   Enum[&#39;Oracle&#39;] $database_type              = &#39;Oracle&#39;,  # only for &gt; 12.1.2
@@ -648,7 +648,7 @@ define oradb::goldengate(
 {
   $exec_path = lookup(&#39;oradb::exec_path&#39;)
 
-  if ( $version == &#39;12.1.2&#39; ) {
+  if ( $version in [&#39;12.1.2&#39;, &#39;12.2.1&#39;] ) {
     # check if the oracle software already exists
     if ( $database_home == undef or is_string($database_home) == false) {fail(&#39;You must specify a database_home&#39;) }
     if ( $oracle_base == undef or is_string($oracle_base) == false) {fail(&#39;You must specify an oracle_base&#39;) }
@@ -670,7 +670,7 @@ define oradb::goldengate(
     $continue = false
   }
 
-  if ( $version == &#39;12.1.2&#39; ) {
+  if ( $version in [&#39;12.1.2&#39;, &#39;12.2.1&#39;] ) {
     if $ora_inventory_dir == undef {
       $ora_inventory = oradb::cleanpath(&quot;${oracle_base}/../oraInventory&quot;)
     } else {
@@ -745,7 +745,7 @@ define oradb::goldengate(
 
   }
 
-  if ( $version != &#39;12.1.2&#39; ){
+  if ( $version != &#39;12.1.2&#39; and $version != &#39;12.2.1&#39;){
 
     if ( $tar_file == undef or is_string($tar_file) == false) {fail(&quot;${title} You must specify a tar_file&quot;) }
 
@@ -806,7 +806,7 @@ define oradb::goldengate(
 </div>
 
       <div id="footer">
-  Generated on Sat Feb 25 19:13:44 2017 by
+  Generated on Sun Mar  5 19:13:55 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.8 (ruby-2.3.1).
 </div>

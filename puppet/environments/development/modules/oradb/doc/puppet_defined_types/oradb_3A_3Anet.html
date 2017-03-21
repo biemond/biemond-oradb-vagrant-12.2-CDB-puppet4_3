@@ -107,7 +107,7 @@ oradb::net{ &#39;config net8&#39;:
         <span class='name'>version</span>
       
       
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'>(<tt>Enum['11.2', '12.1', '12.2']</tt>)</span>
       
       
         <em class="default">(defaults to: <tt>lookup(&#39;oradb::version&#39;)</tt>)</em>
@@ -248,27 +248,19 @@ oradb::net{ &#39;config net8&#39;:
 49
 50
 51
-52
-53
-54
-55
-56</pre>
+52</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/net.pp', line 24</span>
 
 define oradb::net(
-  String $oracle_home  = undef,
-  String $version      = lookup(&#39;oradb::version&#39;),
-  String $user         = lookup(&#39;oradb::user&#39;),
-  String $group        = lookup(&#39;oradb::group&#39;),
-  String $download_dir = lookup(&#39;oradb::download_dir&#39;),
-  Integer $db_port     = lookup(&#39;oradb::listener_port&#39;),
+  String $oracle_home                   = undef,
+  Enum[&#39;11.2&#39;, &#39;12.1&#39;, &#39;12.2&#39;] $version = lookup(&#39;oradb::version&#39;),
+  String $user                          = lookup(&#39;oradb::user&#39;),
+  String $group                         = lookup(&#39;oradb::group&#39;),
+  String $download_dir                  = lookup(&#39;oradb::download_dir&#39;),
+  Integer $db_port                      = lookup(&#39;oradb::listener_port&#39;),
 ){
-  if ( $version in lookup(&#39;oradb::net_versions&#39;) == false ) {
-    fail(&#39;Unrecognized version for oradb::net&#39;)
-  }
-
   $exec_path = lookup(&#39;oradb::exec_path&#39;)
 
   file { &quot;${download_dir}/netca_${version}.rsp&quot;:
@@ -297,7 +289,7 @@ define oradb::net(
 </div>
 
       <div id="footer">
-  Generated on Sat Feb 25 19:13:43 2017 by
+  Generated on Sun Mar  5 19:13:54 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.8 (ruby-2.3.1).
 </div>

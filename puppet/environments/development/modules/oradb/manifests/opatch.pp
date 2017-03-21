@@ -7,14 +7,14 @@
 #
 #  oradb::opatch{'19121551_db_patch':
 #    ensure                    => 'present',
-#    oracle_product_home       => hiera('oracle_home_dir'),
+#    oracle_product_home       => /app/oracle/product/11.2/db',
 #    patch_id                  => '19121551',
 #    patch_file                => 'p19121551_112040_Linux-x86-64.zip',
-#    user                      => hiera('oracle_os_user'),
+#    user                      => 'oracle',
 #    group                     => 'oinstall',
-#    download_dir              => hiera('oracle_download_dir'),
+#    download_dir              => '/var/tmp/install',
 #    ocmrf                     => true,
-#    puppet_download_mnt_point => hiera('oracle_source'),
+#    puppet_download_mnt_point => '/software',
 #  }
 #
 # @param oracle_product_home full path to the Oracle Home directory

@@ -137,7 +137,7 @@ oradb::installem_agent{ &#39;em12104_agent2&#39;:
         <span class='name'>version</span>
       
       
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'>(<tt>Enum['12.1.0.4','12.1.0.5']</tt>)</span>
       
       
         <em class="default">(defaults to: <tt>&#39;12.1.0.5&#39;</tt>)</em>
@@ -744,7 +744,7 @@ group_install the operating group name for the installed software</p>
         <pre class="code"><span class="info file"># File 'manifests/installem_agent.pp', line 70</span>
 
 define oradb::installem_agent(
-  String $version                                = &#39;12.1.0.5&#39;,
+  Enum[&#39;12.1.0.4&#39;,&#39;12.1.0.5&#39;] $version           = &#39;12.1.0.5&#39;,
   Enum[&#39;agentPull&#39;, &#39;agentDeploy&#39;] $install_type = undef,
   String $install_version                        = &#39;12.1.0.5.0&#39;,
   String $install_platform                       = &#39;Linux x86-64&#39;,
@@ -831,7 +831,7 @@ define oradb::installem_agent(
 
       if $manage_curl and !defined(Package[&#39;curl&#39;]) {
         package { &#39;curl&#39;:
-          ensure  =&gt; present,
+          ensure =&gt; present,
         }
       }
 
@@ -900,7 +900,7 @@ define oradb::installem_agent(
 
       if !defined(Package[&#39;unzip&#39;]) {
         package { &#39;unzip&#39;:
-          ensure  =&gt; present,
+          ensure =&gt; present,
         }
       }
 
@@ -955,7 +955,7 @@ define oradb::installem_agent(
 </div>
 
       <div id="footer">
-  Generated on Sat Feb 25 19:13:44 2017 by
+  Generated on Sun Mar  5 19:13:55 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.8 (ruby-2.3.1).
 </div>

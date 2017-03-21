@@ -113,10 +113,23 @@ class oradb_cdb {
       puppet_download_mnt_point => lookup('oracle_source'),
     }
 
+    oradb::opatchupgrade{'122000_opatch_upgrade_db':
+      oracle_home               => hiera('oracle_home_dir'),
+      patch_file                => 'p6880880_122010_Linux-x86-64.zip',
+      csi_number                => undef,
+      support_id                => undef,
+      opversion                 => '12.2.0.1.8',
+      user                      => hiera('oracle_os_user'),
+      group                     => hiera('oracle_os_group'),
+      download_dir              => hiera('oracle_download_dir'),
+      puppet_download_mnt_point => hiera('oracle_source'),
+      require                   => Oradb::Installdb['db_linux-x64'],
+    }
+
     oradb::net{ 'config net8':
       oracle_home  => lookup('oracle_home_dir'),
       version      => lookup('dbinstance_version'),
-      require      => Oradb::Installdb['db_linux-x64'],
+      require      => Oradb::Opatchupgrade['122000_opatch_upgrade_db'],
     }
 
     oradb::tnsnames{'testlistener':
@@ -142,7 +155,7 @@ class oradb_cdb {
       db_domain                 => lookup('oracle_database_domain_name'),
       sys_password              => lookup('oracle_database_sys_password'),
       system_password           => lookup('oracle_database_system_password'),
-      # template                  => 'dbtemplate_12.1',
+      template                  => 'dbtemplate_12.2',
       character_set             => 'AL32UTF8',
       nationalcharacter_set     => 'UTF8',
       sample_schema             => 'TRUE',

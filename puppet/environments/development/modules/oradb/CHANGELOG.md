@@ -1,5 +1,12 @@
 # Version updates
 
+## 3.0.5
+- opatch upgrade fix, emocmrsp is not necessary when version >= 12.2.0.1.5
+- database parameter data_file_destination is required when version = 12.2 plus template and storage_type are defined
+
+## 3.0.4
+- 12.2.0.1 grid support
+
 ## 3.0.3
 - added docs
 - added goldengate 12.2.1 for Oracle Database

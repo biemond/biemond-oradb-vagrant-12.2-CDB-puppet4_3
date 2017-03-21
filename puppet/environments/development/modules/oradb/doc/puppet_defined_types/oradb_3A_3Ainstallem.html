@@ -123,7 +123,7 @@ oradb::installem{ &#39;em12104&#39;:
         <span class='name'>version</span>
       
       
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'>(<tt>Enum['12.1.0.4','12.1.0.5']</tt>)</span>
       
       
         <em class="default">(defaults to: <tt>&#39;12.1.0.5&#39;</tt>)</em>
@@ -924,7 +924,7 @@ oradb::installem{ &#39;em12104&#39;:
         <pre class="code"><span class="info file"># File 'manifests/installem.pp', line 68</span>
 
 define oradb::installem(
-  String $version                                   = &#39;12.1.0.5&#39;,
+  Enum[&#39;12.1.0.4&#39;,&#39;12.1.0.5&#39;] $version              = &#39;12.1.0.5&#39;,
   String $file                                      = undef,
   Optional[String] $ora_inventory_dir               = undef,
   String $oracle_base_dir                           = undef,
@@ -1015,9 +1015,9 @@ define oradb::installem(
       # In $download_dir, will Puppet extract the ZIP files or is this a pre-extracted directory structure.
 
       if ( $version in [&#39;12.1.0.4&#39;, &#39;12.1.0.5&#39;]) {
-        $file1 =  &quot;${file}_disk1.zip&quot;
-        $file2 =  &quot;${file}_disk2.zip&quot;
-        $file3 =  &quot;${file}_disk3.zip&quot;
+        $file1 = &quot;${file}_disk1.zip&quot;
+        $file2 = &quot;${file}_disk2.zip&quot;
+        $file3 = &quot;${file}_disk3.zip&quot;
       }
 
       if $remote_file == true {
@@ -1224,7 +1224,7 @@ define oradb::installem(
 </div>
 
       <div id="footer">
-  Generated on Sat Feb 25 19:13:44 2017 by
+  Generated on Sun Mar  5 19:13:55 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.8 (ruby-2.3.1).
 </div>

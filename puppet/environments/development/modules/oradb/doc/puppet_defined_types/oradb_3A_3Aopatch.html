@@ -91,14 +91,14 @@
       <pre class="example code"><code>
 oradb::opatch{&#39;19121551_db_patch&#39;:
   ensure                    =&gt; &#39;present&#39;,
-  oracle_product_home       =&gt; hiera(&#39;oracle_home_dir&#39;),
+  oracle_product_home       =&gt; /app/oracle/product/11.2/db&#39;,
   patch_id                  =&gt; &#39;19121551&#39;,
   patch_file                =&gt; &#39;p19121551_112040_Linux-x86-64.zip&#39;,
-  user                      =&gt; hiera(&#39;oracle_os_user&#39;),
+  user                      =&gt; &#39;oracle&#39;,
   group                     =&gt; &#39;oinstall&#39;,
-  download_dir              =&gt; hiera(&#39;oracle_download_dir&#39;),
+  download_dir              =&gt; &#39;/var/tmp/install&#39;,
   ocmrf                     =&gt; true,
-  puppet_download_mnt_point =&gt; hiera(&#39;oracle_source&#39;),
+  puppet_download_mnt_point =&gt; &#39;/software&#39;,
 }</code></pre>
     
   </div>
@@ -571,7 +571,7 @@ define oradb::opatch(
 </div>
 
       <div id="footer">
-  Generated on Sat Feb 25 19:13:43 2017 by
+  Generated on Sun Mar  5 19:13:55 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.8 (ruby-2.3.1).
 </div>

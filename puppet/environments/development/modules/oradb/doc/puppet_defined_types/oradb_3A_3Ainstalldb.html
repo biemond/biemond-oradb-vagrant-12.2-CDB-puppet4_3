@@ -115,7 +115,7 @@ oradb::installdb{ &#39;db_linux-x64&#39;:
         <span class='name'>version</span>
       
       
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'>(<tt>Enum['11.2.0.1','11.2.0.3','11.2.0.4','12.1.0.1','12.1.0.2','12.2.0.1']</tt>)</span>
       
       
         <em class="default">(defaults to: <tt>undef</tt>)</em>
@@ -352,7 +352,7 @@ oradb::installdb{ &#39;db_linux-x64&#39;:
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;/tmp&#39;</tt>)</em>
+        <em class="default">(defaults to: <tt>lookup(&#39;oradb::tmp_dir&#39;)</tt>)</em>
       
       
         &mdash;
@@ -765,56 +765,41 @@ oradb::installdb{ &#39;db_linux-x64&#39;:
 322
 323
 324
-325
-326
-327</pre>
+325</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/installdb.pp', line 49</span>
 
 define oradb::installdb(
-  String $version                          = undef,
-  String $file                             = undef,
-  Enum[&#39;SE&#39;, &#39;EE&#39;, &#39;SEONE&#39;] $database_type = lookup(&#39;oradb:installdb:database_type&#39;),
-  Optional[String] $ora_inventory_dir      = undef,
-  String $oracle_base                      = undef,
-  String $oracle_home                      = undef,
-  Boolean $ee_options_selection            = false,
-  Optional[String] $ee_optional_components = undef, # &#39;oracle.rdbms.partitioning:11.2.0.4.0,oracle.oraolap:11.2.0.4.0,oracle.rdbms.dm:11.2.0.4.0,oracle.rdbms.dv:11.2.0.4.0,oracle.rdbms.lbac:11.2.0.4.0,oracle.rdbms.rat:11.2.0.4.0&#39;
-  Boolean $bash_profile                    = true,
-  String $user                             = lookup(&#39;oradb::user&#39;),
-  String $user_base_dir                    = lookup(&#39;oradb::user_base_dir&#39;),
-  String $group                            = lookup(&#39;oradb::group&#39;),
-  String $group_install                    = lookup(&#39;oradb::group_install&#39;),
-  String $group_oper                       = lookup(&#39;oradb::group_oper&#39;),
-  String $download_dir                     = lookup(&#39;oradb::download_dir&#39;),
-  Boolean $zip_extract                     = true,
-  String $puppet_download_mnt_point        = lookup(&#39;oradb::module_mountpoint&#39;),
-  Boolean $remote_file                     = true,
-  Optional[String] $cluster_nodes          = undef,
-  Boolean $cleanup_install_files           = true,
-  Boolean $is_rack_one_install             = false,
-  String $temp_dir                         = &#39;/tmp&#39;,
-  Optional[String] $remote_node            = undef,   # hostname or ip address
+  Enum[&#39;11.2.0.1&#39;,&#39;11.2.0.3&#39;,&#39;11.2.0.4&#39;,&#39;12.1.0.1&#39;,&#39;12.1.0.2&#39;,&#39;12.2.0.1&#39;] $version = undef,
+  String $file                                                                     = undef,
+  Enum[&#39;SE&#39;, &#39;EE&#39;, &#39;SEONE&#39;] $database_type                                         = lookup(&#39;oradb:installdb:database_type&#39;),
+  Optional[String] $ora_inventory_dir                                              = undef,
+  String $oracle_base                                                              = undef,
+  String $oracle_home                                                              = undef,
+  Boolean $ee_options_selection                                                    = false,
+  Optional[String] $ee_optional_components                                         = undef, # &#39;oracle.rdbms.partitioning:11.2.0.4.0,oracle.oraolap:11.2.0.4.0,oracle.rdbms.dm:11.2.0.4.0,oracle.rdbms.dv:11.2.0.4.0,oracle.rdbms.lbac:11.2.0.4.0,oracle.rdbms.rat:11.2.0.4.0&#39;
+  Boolean $bash_profile                                                            = true,
+  String $user                                                                     = lookup(&#39;oradb::user&#39;),
+  String $user_base_dir                                                            = lookup(&#39;oradb::user_base_dir&#39;),
+  String $group                                                                    = lookup(&#39;oradb::group&#39;),
+  String $group_install                                                            = lookup(&#39;oradb::group_install&#39;),
+  String $group_oper                                                               = lookup(&#39;oradb::group_oper&#39;),
+  String $download_dir                                                             = lookup(&#39;oradb::download_dir&#39;),
+  Boolean $zip_extract                                                             = true,
+  String $puppet_download_mnt_point                                                = lookup(&#39;oradb::module_mountpoint&#39;),
+  Boolean $remote_file                                                             = true,
+  Optional[String] $cluster_nodes                                                  = undef,
+  Boolean $cleanup_install_files                                                   = true,
+  Boolean $is_rack_one_install                                                     = false,
+  String $temp_dir                                                                 = lookup(&#39;oradb::tmp_dir&#39;),
+  Optional[String] $remote_node                                                    = undef,   # hostname or ip address
 )
 {
-  $supported_db_versions = join( lookup(&#39;oradb::versions&#39;), &#39;|&#39;)
-  if ( $version in $supported_db_versions == false ){
-    fail(&quot;Unrecognized database install version, use ${supported_db_versions}&quot;)
-  }
-
   $supported_db_kernels = join( lookup(&#39;oradb::kernels&#39;), &#39;|&#39;)
   if ( $::kernel in $supported_db_kernels == false){
     fail(&quot;Unrecognized operating system, please use it on a ${supported_db_kernels} host&quot;)
   }
-
-  $supported_db_types = join( lookup(&#39;oradb::database_types&#39;), &#39;|&#39;)
-  if ( $database_type in $supported_db_types == false){
-    fail(&quot;Unrecognized database type, please use ${supported_db_types}&quot;)
-  }
-
-  if ( $oracle_base == undef or is_string($oracle_base) == false) {fail(&#39;You must specify an oracle_base&#39;) }
-  if ( $oracle_home == undef or is_string($oracle_home) == false) {fail(&#39;You must specify an oracle_home&#39;) }
 
   if ( $oracle_base in $oracle_home == false ){
     fail(&#39;oracle_home folder should be under the oracle_base folder&#39;)
@@ -863,14 +848,21 @@ define oradb::installdb(
     if ( $zip_extract ) {
       # In $download_dir, will Puppet extract the ZIP files or is this a pre-extracted directory structure.
 
+      if ( $version in [&#39;12.2.0.1&#39;]) {
+        $file1 =  &quot;${file}.zip&quot;
+        $total_files = 1
+      }
+
       if ( $version in [&#39;11.2.0.1&#39;,&#39;12.1.0.1&#39;,&#39;12.1.0.2&#39;]) {
-        $file1 =  &quot;${file}_1of2.zip&quot;
-        $file2 =  &quot;${file}_2of2.zip&quot;
+        $file1 = &quot;${file}_1of2.zip&quot;
+        $file2 = &quot;${file}_2of2.zip&quot;
+        $total_files = 2
       }
 
       if ( $version in [&#39;11.2.0.3&#39;,&#39;11.2.0.4&#39;]) {
-        $file1 =  &quot;${file}_1of7.zip&quot;
-        $file2 =  &quot;${file}_2of7.zip&quot;
+        $file1 = &quot;${file}_1of7.zip&quot;
+        $file2 = &quot;${file}_2of7.zip&quot;
+        $total_files = 2
       }
 
       if $remote_file == true {
@@ -884,15 +876,17 @@ define oradb::installdb(
           require =&gt; Db_directory_structure[&quot;oracle structure ${version}_${title}&quot;],
           before  =&gt; Exec[&quot;extract ${download_dir}/${file1}&quot;],
         }
-        # db file 2 installer zip
-        file { &quot;${download_dir}/${file2}&quot;:
-          ensure  =&gt; present,
-          source  =&gt; &quot;${mount_point}/${file2}&quot;,
-          mode    =&gt; &#39;0775&#39;,
-          owner   =&gt; $user,
-          group   =&gt; $group,
-          require =&gt; File[&quot;${download_dir}/${file1}&quot;],
-          before  =&gt; Exec[&quot;extract ${download_dir}/${file2}&quot;]
+        if ( $total_files &gt; 1 ) {
+          # db file 2 installer zip
+          file { &quot;${download_dir}/${file2}&quot;:
+            ensure  =&gt; present,
+            source  =&gt; &quot;${mount_point}/${file2}&quot;,
+            mode    =&gt; &#39;0775&#39;,
+            owner   =&gt; $user,
+            group   =&gt; $group,
+            require =&gt; File[&quot;${download_dir}/${file1}&quot;],
+            before  =&gt; Exec[&quot;extract ${download_dir}/${file2}&quot;]
+          }
         }
         $source = $download_dir
       } else {
@@ -909,15 +903,17 @@ define oradb::installdb(
         require   =&gt; Db_directory_structure[&quot;oracle structure ${version}_${title}&quot;],
         before    =&gt; Exec[&quot;install oracle database ${title}&quot;],
       }
-      exec { &quot;extract ${download_dir}/${file2}&quot;:
-        command   =&gt; &quot;unzip -o ${source}/${file2} -d ${download_dir}/${file}&quot;,
-        timeout   =&gt; 0,
-        logoutput =&gt; false,
-        path      =&gt; $exec_path,
-        user      =&gt; $user,
-        group     =&gt; $group,
-        require   =&gt; Exec[&quot;extract ${download_dir}/${file1}&quot;],
-        before    =&gt; Exec[&quot;install oracle database ${title}&quot;],
+      if ( $total_files &gt; 1 ) {
+        exec { &quot;extract ${download_dir}/${file2}&quot;:
+          command   =&gt; &quot;unzip -o ${source}/${file2} -d ${download_dir}/${file}&quot;,
+          timeout   =&gt; 0,
+          logoutput =&gt; false,
+          path      =&gt; $exec_path,
+          user      =&gt; $user,
+          group     =&gt; $group,
+          require   =&gt; Exec[&quot;extract ${download_dir}/${file1}&quot;],
+          before    =&gt; Exec[&quot;install oracle database ${title}&quot;],
+        }
       }
     }
 
@@ -1058,7 +1054,7 @@ define oradb::installdb(
 </div>
 
       <div id="footer">
-  Generated on Sat Feb 25 19:13:43 2017 by
+  Generated on Sun Mar  5 19:13:55 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.8 (ruby-2.3.1).
 </div>
