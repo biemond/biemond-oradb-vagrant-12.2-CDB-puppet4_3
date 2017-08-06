@@ -1,4 +1,21 @@
 # Version updates
+
+## 3.0.11
+- installdb new groups options like group_backup, group_dg ,group_km ,group_rac
+- remove the container restriction on 12.2
+- added LDAP to netca
+
+## 3.0.10
+- fix opatch for normal patches
+- fix opatch success check for grid
+
+## 3.0.9
+- fix database own dbttemplate issue with double -variablesFile error
+- 12.2 db requires always container database = true
+- chown fix on directories without -R
+- opatch facts fix
+- added extra stop & start in dbora_Linux startup script
+
 ## 3.0.8
 - 12.2 db rsp template had a listener error
 

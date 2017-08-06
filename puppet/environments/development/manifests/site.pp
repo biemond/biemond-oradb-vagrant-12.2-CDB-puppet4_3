@@ -156,7 +156,7 @@ class oradb_cdb {
       sys_password              => lookup('oracle_database_sys_password'),
       system_password           => lookup('oracle_database_system_password'),
       # template                  => 'dbtemplate_12.2',
-      # template                  => 'dbtemplate_12.2_vars',
+      template                  => 'dbtemplate_12.2_vars',
       character_set             => 'AL32UTF8',
       nationalcharacter_set     => 'UTF8',
       sample_schema             => 'TRUE',
