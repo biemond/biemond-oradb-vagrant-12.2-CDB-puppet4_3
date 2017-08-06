@@ -1,6 +1,6 @@
 node 'dbcdb.example.com' {
   include oradb_os
-  include oradb_client
+  # include oradb_client
   include oradb_cdb
   # include oradb_gg
 }
@@ -10,11 +10,11 @@ Package{allow_virtual => false,}
 # operating settings for Database & Middleware
 class oradb_os {
 
-  swap_file::files { 'swap_file_custom':
-    ensure       => present,
-    swapfilesize => '6.0 GB',
-    swapfile     => '/data/swapfile.custom',
-  }
+  # swap_file::files { 'swap_file_custom':
+  #   ensure       => present,
+  #   swapfilesize => '6.0 GB',
+  #   swapfile     => '/data/swapfile.custom',
+  # }
 
 
   # set the tmpfs
