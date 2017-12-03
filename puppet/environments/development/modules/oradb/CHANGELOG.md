@@ -1,9 +1,17 @@
 # Version updates
 
+## 3.0.12
+- db_domain is optional again on database.pp
+- opatchupgrade, fixed the version check for doing emocmrsp or not
+
 ## 3.0.11
 - installdb new groups options like group_backup, group_dg ,group_km ,group_rac
 - remove the container restriction on 12.2
 - added LDAP to netca
+- cleanup on installdb works now for only 1 install binary
+- allow the creation of grid home & base on installasm
+- fix installasm 12.2 issue with CRS_SWONLY 
+
 
 ## 3.0.10
 - fix opatch for normal patches
