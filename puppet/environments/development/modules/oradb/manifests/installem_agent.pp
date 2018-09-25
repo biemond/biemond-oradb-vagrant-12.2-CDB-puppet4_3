@@ -88,7 +88,7 @@ define oradb::installem_agent(
   String $group                                      = lookup('oradb::group_install'),
   String $download_dir                               = lookup('oradb::download_dir'),
   Boolean $log_output                                = false,
-  String $oracle_hostname                            = undef, # FQDN hostname where to install on
+  String $oracle_hostname                            = lookup('oradb::oracle_hostname',{default_value => $::fqdn}),
   Boolean $manage_curl                               = true,
 )
 {
@@ -243,9 +243,9 @@ define oradb::installem_agent(
       }
 
       if ( $agent_instance_home_dir == undef ) {
-        $command = "${download_dir}/em_agent_${version}/agentDeploy.sh AGENT_BASE_DIR=${agent_base_dir} AGENT_REGISTRATION_PASSWORD=${agent_registration_password} OMS_HOST=${oms_host} AGENT_PORT=${agent_port} EM_UPLOAD_PORT=${em_upload_port}"
+        $command = "${download_dir}/em_agent_${version}/agentDeploy.sh AGENT_BASE_DIR=${agent_base_dir} AGENT_REGISTRATION_PASSWORD=${agent_registration_password} OMS_HOST=${oms_host} AGENT_PORT=${agent_port} EM_UPLOAD_PORT=${em_upload_port} ORACLE_HOSTNAME=${oracle_hostname}"
       } else {
-        $command = "${download_dir}/em_agent_${version}/agentDeploy.sh AGENT_BASE_DIR=${agent_base_dir} AGENT_INSTANCE_HOME=${agent_instance_home_dir} AGENT_REGISTRATION_PASSWORD=${agent_registration_password} OMS_HOST=${oms_host} AGENT_PORT=${agent_port} EM_UPLOAD_PORT=${em_upload_port}"
+        $command = "${download_dir}/em_agent_${version}/agentDeploy.sh AGENT_BASE_DIR=${agent_base_dir} AGENT_INSTANCE_HOME=${agent_instance_home_dir} AGENT_REGISTRATION_PASSWORD=${agent_registration_password} OMS_HOST=${oms_host} AGENT_PORT=${agent_port} EM_UPLOAD_PORT=${em_upload_port} ORACLE_HOSTNAME=${oracle_hostname}"
       }
 
       exec { "agentDeploy execute ${title}":

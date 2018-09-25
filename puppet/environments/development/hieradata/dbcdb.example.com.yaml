@@ -2,7 +2,7 @@
 
 db_version:               '12.2.0.1'
 dbinstance_version:       '12.2'
-db_file:                  'V839960-01'
+db_file:                  'linuxx64_12201_database'
 
 
 oraInventory_dir:         '/oracle'

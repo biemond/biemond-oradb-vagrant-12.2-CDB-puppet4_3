@@ -4,8 +4,8 @@ The reference implementation of https://github.com/biemond/biemond-oradb
 optimized for linux, solaris
 
 ### Software 12.2.0.1
-- database V839960-01.zip
-- client V839967-01.zip
+- database linuxx64_12201_database.zip
+- client linuxx64_12201_client.zip
 
 ### Vagrant
 Update the vagrant /software share to your local binaries folder

@@ -7,8 +7,11 @@ rvm --version
 
 # rvm install ruby-1.8.7
 # rvm use ruby-1.8.7
-rvm install ruby-2.3.1
-rvm use ruby-2.3.1
+# rvm install ruby-2.3.1
+# rvm use ruby-2.3.1
+rvm install ruby-2.3.6
+rvm use ruby-2.3.6
+
 
 set -e
 
@@ -18,7 +21,6 @@ gem --version
 gem install bundler --no-rdoc --no-ri
 bundle install --without development
 bundle --version
-gem update --system 2.1.11
 
 bundle exec rake syntax
 bundle exec rake lint

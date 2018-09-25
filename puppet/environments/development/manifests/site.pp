@@ -113,23 +113,24 @@ class oradb_cdb {
       puppet_download_mnt_point => lookup('oracle_source'),
     }
 
-    oradb::opatchupgrade{'122000_opatch_upgrade_db':
-      oracle_home               => hiera('oracle_home_dir'),
-      patch_file                => 'p6880880_122010_Linux-x86-64.zip',
-      csi_number                => undef,
-      support_id                => undef,
-      opversion                 => '12.2.0.1.8',
-      user                      => hiera('oracle_os_user'),
-      group                     => hiera('oracle_os_group'),
-      download_dir              => hiera('oracle_download_dir'),
-      puppet_download_mnt_point => hiera('oracle_source'),
-      require                   => Oradb::Installdb['db_linux-x64'],
-    }
+    # oradb::opatchupgrade{'122000_opatch_upgrade_db':
+    #   oracle_home               => hiera('oracle_home_dir'),
+    #   patch_file                => 'p6880880_122010_Linux-x86-64.zip',
+    #   csi_number                => undef,
+    #   support_id                => undef,
+    #   opversion                 => '12.2.0.1.8',
+    #   user                      => hiera('oracle_os_user'),
+    #   group                     => hiera('oracle_os_group'),
+    #   download_dir              => hiera('oracle_download_dir'),
+    #   puppet_download_mnt_point => hiera('oracle_source'),
+    #   require                   => Oradb::Installdb['db_linux-x64'],
+    # }
 
     oradb::net{ 'config net8':
       oracle_home  => lookup('oracle_home_dir'),
       version      => lookup('dbinstance_version'),
-      require      => Oradb::Opatchupgrade['122000_opatch_upgrade_db'],
+      # require      => Oradb::Opatchupgrade['122000_opatch_upgrade_db'],
+      require      => Oradb::Installdb['db_linux-x64'],
     }
 
     oradb::tnsnames{'testlistener':
@@ -194,6 +195,7 @@ class oradb_cdb {
     oradb::database_pluggable{'pdb1':
       ensure                   => 'present',
       version                  => '12.1',
+      oracle_base              => lookup('oracle_base_dir'),
       oracle_home_dir          => lookup('oracle_home_dir'),
       source_db                => lookup('oracle_database_name'),
       pdb_name                 => 'pdb1',
@@ -208,6 +210,7 @@ class oradb_cdb {
     oradb::database_pluggable{'pdb2':
       ensure                   => 'present',
       version                  => '12.1',
+      oracle_base              => lookup('oracle_base_dir'),
       oracle_home_dir          => lookup('oracle_home_dir'),
       source_db                => lookup('oracle_database_name'),
       pdb_name                 => 'pdb2',
@@ -226,7 +229,7 @@ class oradb_client {
 
   oradb::client{ '12.2.0.1_Linux-x86-64':
     version                   => '12.2.0.1',
-    file                      => 'V839967-01.zip',
+    file                      => 'linuxx64_12201_client.zip',
     oracle_base               => '/oracle',
     oracle_home               => '/oracle/product/12.2/client',
     ora_inventory_dir         => '/oracle',
@@ -257,14 +260,14 @@ class oradb_client {
 class oradb_gg {
   require oradb_cdb
 
-    oradb::goldengate{ 'ggate12.2.1':
-      version                    => '12.2.1',
-      file                       => 'fbo_ggs_Linux_x64_shiphome.zip',
+    oradb::goldengate{ 'ggate12.3.0':
+      version                    => '12.3.0',
+      file                       => '123014_fbo_ggs_Linux_x64_shiphome.zip',
       database_type              => 'Oracle',
       database_version           => 'ORA12c',
       database_home              => lookup('oracle_home_dir'),
       oracle_base                => lookup('oracle_base_dir'),
-      goldengate_home            => '/oracle/product/12.1/ggate',
+      goldengate_home            => '/oracle/product/12.3/ggate',
       manager_port               => 16000,
       user                       => lookup('oracle_os_user'),
       group                      => 'dba',
