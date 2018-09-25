@@ -2,7 +2,7 @@ node 'dbcdb.example.com' {
   include oradb_os
   # include oradb_client
   include oradb_cdb
-  # include oradb_gg
+  include oradb_gg
 }
 
 Package{allow_virtual => false,}
